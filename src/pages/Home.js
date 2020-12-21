@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from '../presentational/core/Link';
 
-const AUTHORIZE_LINK = 'https://podcastr.eu.auth0.com/authorize';
+const AUTHORIZE_LINK = 'https://accounts.spotify.com/authorize';
 
 const buildURLQuery = obj =>
   Object.entries(obj)
@@ -11,10 +11,9 @@ const buildURLQuery = obj =>
 export default function Home() {
   const parameters = {
     'response_type': 'token',
-    'audience': '1234567890',
-    'client_id': 'Nj3tcyeh1tV1I9FHmEK7iEnbJJgbsYCq',
+    'client_id': 'e1df52fc83c942baa82f5be620f6426f',
     'redirect_uri': 'http://localhost:3000/callback',
-    scope: 'profile email',
+    scope: 'user-read-email user-library-read playlist-read-private',
   };
 
   const query = buildURLQuery(parameters);
