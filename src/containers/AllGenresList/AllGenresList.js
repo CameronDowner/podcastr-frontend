@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 
 import { loadGenres } from '../../store/actions/genres';
 
-import GenreList from '../../presentational/GenreList';
+import GenreList from '../../components/GenreList';
 
 const mapStateToProps = function ({ genres }) {
   return {
