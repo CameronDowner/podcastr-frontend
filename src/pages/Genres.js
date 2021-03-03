@@ -3,18 +3,39 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 import Layout from "./Layout";
+import { Card, CardContent, CardMedia, Grid, Typography } from "@material-ui/core";
 
-function PodcastShowCard({ name, images }) {
+function PodcastShowCard({ name, images, description, publisher, total_episodes }) {
   return (
-    <div>
-      <p>{ name }</p>
-      <img src={ images[1].url } />
-    </div>
+    <Card style={ { maxWidth: 400, width: 400, height: "100%" } }>
+      <CardMedia
+        image={ images[1].url }
+        style={ { height: 400 } }
+        title={ name + " Cover Artwork" } />
+      <CardContent>
+        <Typography variant="h6">
+          { name }
+        </Typography>
+        <Typography variant="subtitle1" color="textSecondary" component="p">
+          { publisher } • { total_episodes } Episodes
+        </Typography>
+      </CardContent>
+    </Card>
   );
 }
 
 function PodcastShowList({ podcasts = [] }) {
-  return podcasts.map(podcast => <PodcastShowCard { ...podcast } />);
+  return (
+    <Grid container spacing={ 1 } justify="center">
+      {
+        podcasts.map(podcast => (
+          <Grid item>
+            <PodcastShowCard { ...podcast } />
+          </Grid>
+        ))
+      }
+    </Grid>
+  );
 }
 
 export default function Genres() {
@@ -42,9 +63,7 @@ export default function Genres() {
 
   return (
     <Layout>
-      <h1>Genres</h1>
-      <p>{ JSON.stringify(authentication) }</p>
-      <p>{ JSON.stringify(profile) }</p>
+      <Typography variant="h2">Your Podcasts</Typography>
       <PodcastShowList podcasts={ (playlists.items || []).map(item => item.show) } />
     </Layout>
   );

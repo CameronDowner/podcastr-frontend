@@ -1,6 +1,6 @@
 import React from "react";
 
-import { AppBar, IconButton, makeStyles, Toolbar, Typography } from "@material-ui/core";
+import { AppBar, Container, IconButton, makeStyles, Toolbar, Typography } from "@material-ui/core";
 import { AccountCircle } from "@material-ui/icons";
 
 const useStyles = makeStyles({
@@ -29,7 +29,9 @@ export default function Layout({ children }) {
           </IconButton>
         </Toolbar>
       </AppBar>
+      <Container>
       { children }
+      </Container>
     </>
   );
 }
