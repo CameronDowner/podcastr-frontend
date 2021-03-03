@@ -1,46 +1,44 @@
 import React from "react";
 
-import { Container, makeStyles, Paper, Typography } from "@material-ui/core";
+import { Container, Grid, makeStyles, Typography } from "@material-ui/core";
 
 import LoginWithSpotifyButton from "../components/LoginWithSpotifyButton";
 
 const useStyles = makeStyles({
-  loginCard: {
-    width: "100%",
-    maxWidth: "550px",
-    margin: "15vh auto",
-    padding: "0.5rem 1rem",
-    textAlign: "center"
-  },
-  centered: {
-    padding: "1rem"
-  },
-  container: {
-    position: "fixed",
-    backgroundColor: "#AA9CAA",
-    width: "100vw",
-    height: "100vh"
-  }
+    centre: {
+        marginLeft: "auto",
+        marginRight: "auto"
+    },
+    fullHeight: {
+        height: "100vh"
+    },
+    tenPercentHeight: {
+        height: "40vh"
+    }
 });
 
 export default function Home() {
-  const classes = useStyles();
+    const classes = useStyles();
 
-  return (
-    <div className={ classes.container }>
+    return (
       <Container>
-        <Paper className={ classes.loginCard }>
-          <Typography variant="h4">
-            Welcome to Podcastr
-          </Typography>
-          <Typography>
-            Some introduction text here.
-          </Typography>
-          <div className={ classes.centered }>
-            <LoginWithSpotifyButton />
-          </div>
-        </Paper>
+          <Grid container direction="column" alignItems="center" justify="center" alignContent="center"
+                className={ classes.fullHeight } spacing={ 1 }>
+              <Grid item>
+                  <Typography variant="h4">
+                      Podcastr
+                  </Typography>
+              </Grid>
+              <Grid item>
+                  <Typography>
+                      Find your perfect podcast.
+                  </Typography>
+              </Grid>
+              <Grid item>
+                  <LoginWithSpotifyButton />
+              </Grid>
+              <div className={ classes.tenPercentHeight } />
+          </Grid>
       </Container>
-    </div>
-  );
+    );
 }
