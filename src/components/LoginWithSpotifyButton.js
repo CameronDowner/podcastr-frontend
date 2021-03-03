@@ -45,7 +45,7 @@ export default function LoginWithSpotifyButton() {
       <Button className={ classes.loginWithSpotifyButton } color="primary" size="large" variant="contained"
               href={ authorizationUri }
               disableElevation startIcon={ <SpotifyIcon /> }>
-          Login with Spotify
+          Log in with Spotify
       </Button>
     );
 }
