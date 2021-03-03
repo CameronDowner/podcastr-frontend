@@ -41,16 +41,6 @@ function PodcastShowList({ podcasts = [] }) {
 export default function Genres() {
   const authentication = useSelector(state => state.authentication);
 
-  const [profile, setProfile] = useState({});
-
-  useEffect(() => {
-    fetch("https://api.spotify.com/v1/me", {
-      headers: {
-        Authorization: `Bearer ${ authentication.accessToken }`
-      }
-    }).then(res => res.json()).then(setProfile);
-  }, [authentication]);
-
   const [playlists, setPlaylists] = useState({ items: [] });
 
   useEffect(() => {

@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Redirect, Route, Switch } from "react-router-d
 import Home from "./pages/Home";
 import Callback from "./pages/Callback";
 import Genres from "./pages/Genres";
+import Logout from "./pages/Logout";
 import { PrivateRoute, PublicRoute } from "./routes";
 import { CssBaseline } from "@material-ui/core";
 import { QueryClient, QueryClientProvider } from "react-query";
@@ -21,6 +22,7 @@ function App() {
                       <PublicRoute path="/" exact component={ Home } />
                       <Route path="/callback" exact component={ Callback } />
                       <PrivateRoute path="/home" exact component={ Genres } />
+                      <PrivateRoute path="/logout" exact component={ Logout } />
                       <Redirect to="/" />
                   </Switch>
               </Router>

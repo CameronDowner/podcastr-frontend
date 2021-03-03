@@ -1,37 +1,41 @@
 import React from "react";
 
-import { AppBar, Container, IconButton, makeStyles, Toolbar, Typography } from "@material-ui/core";
-import { AccountCircle } from "@material-ui/icons";
+import { Box, Button, Container, Divider, Grid, makeStyles, Typography } from "@material-ui/core";
 
 const useStyles = makeStyles({
-  grow: {
-    flexGrow: 1
-  }
+    grow: {
+        flexGrow: 1
+    },
+    topBarBox: {
+        paddingTop: "1rem",
+        paddingBottom: "1rem"
+    },
+    logoutButton: {
+        textTransform: "none"
+    }
 });
 
 export default function Layout({ children }) {
-  const classes = useStyles();
-  return (
-    <>
-      <AppBar position="static">
-        <Toolbar>
-          <Typography variant="h6">
-            Podcastr
-          </Typography>
-          <div className={ classes.grow } />
-          <IconButton
-            edge="end"
-            aria-label="account of current user"
-            aria-haspopup="true"
-            color="inherit"
-          >
-            <AccountCircle />
-          </IconButton>
-        </Toolbar>
-      </AppBar>
-      <Container>
-      { children }
-      </Container>
-    </>
-  );
+    const classes = useStyles();
+    return (
+      <>
+          <Container>
+              <Box className={ classes.topBarBox }>
+                  <Grid container alignItems="center">
+                      <Grid item>
+                          <Typography variant="h4" component="h1">Podcastr</Typography>
+                      </Grid>
+                      <Grid item className={ classes.grow } />
+                      <Grid item>
+                          <Button size="large" className={classes.logoutButton} href="/logout">Logout</Button>
+                      </Grid>
+                  </Grid>
+              </Box>
+          </Container>
+          <Divider />
+          <Container>
+              { children }
+          </Container>
+      </>
+    );
 }
