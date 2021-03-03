@@ -7,19 +7,24 @@ import Callback from "./pages/Callback";
 import Genres from "./pages/Genres";
 import { PrivateRoute, PublicRoute } from "./routes";
 import { CssBaseline } from "@material-ui/core";
+import { QueryClient, QueryClientProvider } from "react-query";
+
+const queryClient = new QueryClient();
 
 function App() {
     return (
       <>
           <CssBaseline />
-          <Router>
-              <Switch>
-                  <PublicRoute path="/" exact component={ Home } />
-                  <Route path="/callback" exact component={ Callback } />
-                  <PrivateRoute path="/genres" exact component={ Genres } />
-                  <Redirect to="/" />
-              </Switch>
-          </Router>
+          <QueryClientProvider client={ queryClient }>
+              <Router>
+                  <Switch>
+                      <PublicRoute path="/" exact component={ Home } />
+                      <Route path="/callback" exact component={ Callback } />
+                      <PrivateRoute path="/genres" exact component={ Genres } />
+                      <Redirect to="/" />
+                  </Switch>
+              </Router>
+          </QueryClientProvider>
       </>
     );
 }
