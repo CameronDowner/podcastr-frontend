@@ -20,7 +20,7 @@ function App() {
                   <Switch>
                       <PublicRoute path="/" exact component={ Home } />
                       <Route path="/callback" exact component={ Callback } />
-                      <PrivateRoute path="/genres" exact component={ Genres } />
+                      <PrivateRoute path="/home" exact component={ Genres } />
                       <Redirect to="/" />
                   </Switch>
               </Router>

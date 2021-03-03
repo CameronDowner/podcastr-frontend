@@ -61,7 +61,7 @@ function Callback() {
 
     useEffect(() => {
         if (profile && profile.display_name) {
-            history.push("/genres")
+            history.push("/home")
         }
     }, [profile])
 

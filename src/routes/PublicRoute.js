@@ -9,7 +9,7 @@ function PublicRoute({ authentication, component, ...rest }) {
   const { expiry } = authentication;
   const isActive = moment(expiry).isAfter(moment());
 
-  const redirectToDashboard = () => <Redirect to="/genres" />;
+  const redirectToDashboard = () => <Redirect to="/home" />;
   const componentToRender = isActive ? redirectToDashboard : component;
 
   return <Route component={componentToRender} {...rest} />;
