@@ -13,7 +13,7 @@ function useAuthentication() {
                 return { authenticated: false };
             }
         });
-    }, { initialData: { foo: true }, retry: false });
+    }, { initialData: { isFresh: true }, retry: false });
 }
 
 function PrivateRoute({ component: Component, ...rest }) {

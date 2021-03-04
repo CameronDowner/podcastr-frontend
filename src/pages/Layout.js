@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Box, Button, Container, Divider, Grid, makeStyles, Typography } from "@material-ui/core";
+import { Box, Button, Container, Grid, makeStyles, Typography } from "@material-ui/core";
 import { Mic } from "@material-ui/icons";
 
 const useStyles = makeStyles({
@@ -9,7 +9,7 @@ const useStyles = makeStyles({
     },
     topBarBox: {
         paddingTop: "1rem",
-        paddingBottom: "1rem"
+        paddingBottom: "2rem"
     },
     logoutButton: {
         textTransform: "none"
@@ -36,7 +36,6 @@ export default function Layout({ children }) {
                   </Grid>
               </Box>
           </Container>
-          <Divider />
           <Container>
               { children }
           </Container>
