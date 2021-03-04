@@ -43,7 +43,7 @@ export default function LoginWithSpotifyButton() {
     const authorizationUri = `${ AUTHORIZE_LINK }?${ query }`;
     return (
       <Button className={ classes.loginWithSpotifyButton } color="primary" size="large" variant="contained"
-              href={ authorizationUri }
+              href={ "/oauth2/authorization/spotify" }
               disableElevation startIcon={ <SpotifyIcon /> }>
           Log in with Spotify
       </Button>

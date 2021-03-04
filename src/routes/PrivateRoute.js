@@ -1,19 +1,33 @@
-import React from 'react';
-import { connect } from 'react-redux';
+import React, { useEffect } from "react";
 
-import moment from 'moment';
+import { Route } from "react-router-dom";
+import { useQuery } from "react-query";
+import { useHistory } from "react-router";
 
-import { Redirect, Route } from 'react-router-dom';
-
-function PrivateRoute({ authentication, component: Component, ...rest }) {
-  const { expiry } = authentication;
-  const isActive = moment(expiry).isAfter(moment());
-
-  const redirectToLogin = () => <Redirect to="/" />;
-  const componentToRender = isActive ? Component : redirectToLogin;
-
-  return <Route component={componentToRender} {...rest} />;
+function useAuthentication() {
+    return useQuery("authentication", () => {
+        return fetch("/api/me").then(res => {
+            if (res.ok) {
+                return { authenticated: true };
+            } else {
+                return { authenticated: false };
+            }
+        });
+    }, { initialData: { foo: true }, retry: false });
 }
 
-const mapStateToProps = ({ authentication }) => ({ authentication });
-export default connect(mapStateToProps)(PrivateRoute);
+function PrivateRoute({ component: Component, ...rest }) {
+    const history = useHistory();
+    const { isLoading, data } = useAuthentication();
+    const { authenticated, isFresh } = data;
+
+    useEffect(() => {
+        if (!isFresh && !isLoading && !authenticated) {
+            history.push("/");
+        }
+    }, [isFresh, isLoading, authenticated, history]);
+
+    return <Route component={ Component } { ...rest } />;
+}
+
+export default PrivateRoute;

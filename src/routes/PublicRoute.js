@@ -1,19 +1,34 @@
-import React from "react";
-import { connect } from "react-redux";
+import React, { useEffect } from "react";
 
-import { Route, Redirect } from "react-router-dom";
+import { Route } from "react-router-dom";
 
-import moment from "moment";
+import { useQuery } from "react-query";
+import { useHistory } from "react-router";
 
-function PublicRoute({ authentication, component, ...rest }) {
-  const { expiry } = authentication;
-  const isActive = moment(expiry).isAfter(moment());
-
-  const redirectToDashboard = () => <Redirect to="/home" />;
-  const componentToRender = isActive ? redirectToDashboard : component;
-
-  return <Route component={componentToRender} {...rest} />;
+function useAuthentication() {
+    return useQuery("authentication", () => {
+        return fetch("/api/me").then(res => {
+            if (res.ok) {
+                return { authenticated: true };
+            } else {
+                return { authenticated: false };
+            }
+        });
+    }, { initialData: { isFresh: true }, retry: false });
 }
 
-const mapStateToProps = ({ authentication }) => ({ authentication });
-export default connect(mapStateToProps)(PublicRoute);
+function PublicRoute({ component, ...rest }) {
+    const history = useHistory();
+    const { isLoading, data } = useAuthentication();
+    const { authenticated, isFresh } = data;
+
+    useEffect(() => {
+        if (!isFresh && !isLoading && authenticated) {
+            history.push("/home");
+        }
+    }, [isFresh, isLoading, authenticated, history]);
+
+    return <Route component={ component } { ...rest } />;
+}
+
+export default PublicRoute;

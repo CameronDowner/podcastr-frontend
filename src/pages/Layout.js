@@ -1,6 +1,7 @@
 import React from "react";
 
 import { Box, Button, Container, Divider, Grid, makeStyles, Typography } from "@material-ui/core";
+import { Mic } from "@material-ui/icons";
 
 const useStyles = makeStyles({
     grow: {
@@ -23,11 +24,14 @@ export default function Layout({ children }) {
               <Box className={ classes.topBarBox }>
                   <Grid container alignItems="center">
                       <Grid item>
-                          <Typography variant="h4" component="h1">Podcastr</Typography>
+                          <Mic fontSize="large" />
+                      </Grid>
+                      <Grid item>
+                          <Typography variant="h5" component="h1">Podcastr</Typography>
                       </Grid>
                       <Grid item className={ classes.grow } />
                       <Grid item>
-                          <Button size="large" className={classes.logoutButton} href="/logout">Logout</Button>
+                          <Button size="large" className={ classes.logoutButton } href="/logout">Logout</Button>
                       </Grid>
                   </Grid>
               </Box>
