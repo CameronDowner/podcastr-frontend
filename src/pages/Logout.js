@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { CircularProgress, Container, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import { useHistory } from "react-router";
 
 const useStyles = makeStyles({
     spinnerWrapper: {
@@ -11,9 +12,13 @@ const useStyles = makeStyles({
 
 function Logout() {
     const classes = useStyles();
+    const history = useHistory();
 
     useEffect(() => {
-        fetch("/api/logout");
+        fetch("/api/logout")
+          .then(() => {
+              history.push("/");
+          });
     }, [])
 
     return (

@@ -1,11 +1,11 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 
 import Layout from "./Layout";
-import { Card, CardContent, Grid, IconButton, Paper, Typography } from "@material-ui/core";
+import { Backdrop, Card, CardContent, CircularProgress, Grid, IconButton, Paper, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { FavoriteBorder, Pause, PlayArrow, SkipNext } from "@material-ui/icons";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
     contentCard: {
         // backgroundColor: "transparent"
         maxWidth: "400px",
@@ -20,8 +20,15 @@ const useStyles = makeStyles({
         "& svg": {
             fontSize: 64
         }
+    },
+    backdrop: {
+        zIndex: theme.zIndex.drawer + 1,
+        color: "#fff"
+    },
+    center: {
+        textAlign: "center"
     }
-});
+}));
 
 function useRecommendedPodcast() {
     const [loading, setLoading] = useState(false);
@@ -30,7 +37,7 @@ function useRecommendedPodcast() {
 
     const loadPodcastRef = useRef(() => {
         setLoading(true);
-        fetch("/api/recommend_podcast")
+        return fetch("/api/recommend_podcast")
           .then(res => res.json())
           .then(setPodcast)
           .finally(() => setLoading(false));
@@ -59,12 +66,12 @@ function useAudio(audio, startTimeSec = 0) {
 
     useEffect(() => {
         if (isPlaying) {
-            audioRef.current.play()
+            audioRef.current.play();
         }
     }, [audio]);
 
     const AudioComponent = useMemo(() => () => (
-      <audio ref={audioRef} src={`${ audio }#t=${ startTimeSec }`} />
+      <audio ref={ audioRef } src={ `${ audio }#t=${ startTimeSec }` } />
     ), [audio]);
 
     return {
@@ -72,19 +79,20 @@ function useAudio(audio, startTimeSec = 0) {
         pause,
         isPlaying,
         AudioComponent
-    }
+    };
 }
 
 
 export default function Genres() {
     const classes = useStyles();
     const { podcast, loading, loadPodcast } = useRecommendedPodcast();
+    const [isInitialLoad, setInitialLoad] = useState(true);
 
-    const { audio, previewStartingTimeSec } = (podcast.previewEpisode || {})
+    const { audio, previewStartingTimeSec } = (podcast.previewEpisode || {});
 
     const { AudioComponent, play, pause, isPlaying } = useAudio(audio, previewStartingTimeSec);
 
-    useEffect(() => loadPodcast(), []);
+    useEffect(() => loadPodcast().then(() => setInitialLoad(false)), []);
 
     function handleNextButtonClick() {
         loadPodcast();
@@ -92,14 +100,27 @@ export default function Genres() {
 
     return (
       <Layout>
+          <Backdrop open={ isInitialLoad } className={ classes.backdrop }>
+              <Grid container direction="column" alignContent="center">
+                  <Grid item className={ classes.center }>
+                      <CircularProgress color="inherit" />
+                  </Grid>
+                  <Grid item>
+                      <Typography color="inherit">
+                          We're finding podcasts based on your Spotify
+                      </Typography>
+                  </Grid>
+              </Grid>
+          </Backdrop>
           <AudioComponent />
           <Grid container spacing={ 4 }>
               <Grid item xs={ 12 }>
                   <Grid container spacing={ 4 } wrap="nowrap">
                       <Grid item>
-                          <Paper style={ { width: "fit-content", height: "300px", overflow: "hidden" } }>
-                              <img
-                                src={ podcast.thumbnail } />
+                          <Paper
+                            style={ { width: "fit-content", height: "300px", minWidth: "300px", overflow: "hidden", textAlign: "center" } }>
+                              { !loading && <img src={ podcast.thumbnail } /> }
+                              { !isInitialLoad && loading && <CircularProgress /> }
                           </Paper>
                       </Grid>
                       <Grid item style={ { flexGrow: 1, alignSelf: "stretch" } }>
@@ -111,12 +132,12 @@ export default function Genres() {
                               </Grid>
                               <Grid item>
                                   <IconButton className={ classes.largeIcon }>
-                                      { !isPlaying && <PlayArrow onClick={() => play()}/> }
-                                      { isPlaying && <Pause onClick={() => pause()}/> }
+                                      { !isPlaying && <PlayArrow onClick={ () => play() } /> }
+                                      { isPlaying && <Pause onClick={ () => pause() } /> }
                                   </IconButton>
                               </Grid>
                               <Grid item>
-                                  <IconButton className={ classes.largeIcon } onClick={handleNextButtonClick}>
+                                  <IconButton className={ classes.largeIcon } onClick={ handleNextButtonClick }>
                                       <SkipNext />
                                   </IconButton>
                               </Grid>
@@ -126,12 +147,19 @@ export default function Genres() {
               </Grid>
               <Grid item xs={ 12 }>
                   <Card variant="outlined">
-                      <CardContent>
-                          <Typography variant="h6">{ podcast.title }</Typography>
-                          <Typography variant="body1">
-                              { podcast.description }
-                          </Typography>
-                      </CardContent>
+                      { !isInitialLoad && loading && (
+                        <CardContent>
+                            <CircularProgress />
+                        </CardContent>
+                      ) }
+                      { !loading && (
+                        <CardContent>
+                            <Typography variant="h6">{ podcast.title }</Typography>
+                            <Typography variant="body1">
+                                { podcast.description }
+                            </Typography>
+                        </CardContent>
+                      ) }
                   </Card>
               </Grid>
           </Grid>
