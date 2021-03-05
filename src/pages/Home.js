@@ -28,6 +28,8 @@ const thumbnails = [
     "https://cdn-images-1.listennotes.com/podcasts/joyride-with-jools-holland-and-jim-moir-Lr_CKJkOIfH-cDC_2AyWHox.300x300.jpg"
 ];
 
+const maxWidth = 324 * thumbnails.length;
+
 const useStyles = makeStyles({
     centre: {
         marginLeft: "auto",
@@ -44,11 +46,13 @@ const useStyles = makeStyles({
         width: "max-content",
         top: "3vh",
         zIndex: -100,
-        animation: "$goingRight 70000ms linear"
+        animation: "$goingRight 70000ms linear",
+        animationIterationCount: "infinite",
+        right: -maxWidth
     },
     "@keyframes goingRight": {
-        "0%": { right: "100vw" },
-        "100%": { right: "-100%" }
+        "0%": { right: -maxWidth },
+        "100%": { right: 0 }
     }
     ,
     bottomTrack: {
@@ -56,11 +60,14 @@ const useStyles = makeStyles({
         width: "max-content",
         bottom: "15vh",
         zIndex: -100,
-        animation: "$goingLeft 120000ms linear"
+        animation: "$goingLeft 120000ms linear",
+        animationIterationCount: "infinite",
+        animationDelay: "-25s",
+        left: -maxWidth
     },
     "@keyframes goingLeft": {
-        "0%": { left: "25%" },
-        "100%": { left: "-100%" }
+        "0%": { left: -maxWidth },
+        "100%": { left: 0 }
     }
 });
 
